@@ -13,9 +13,23 @@ const config: ForgeConfig = {
     asar: true,
   },
   rebuildConfig: {},
+  publishers: [
+    {
+      name: '@electron-forge/publisher-github',
+      config: {
+        repository: {
+          owner: 'mauriciorossdev',
+          name: 'git-x'
+        },
+        prerelease: false
+      }
+    }
+  ],
   makers: [
-    new MakerSquirrel({}), 
-    new MakerZIP({}, ['darwin']), 
+    new MakerSquirrel({
+      name: 'git-x'
+    }), 
+    new MakerZIP({}, ['darwin', 'win32']), 
     new MakerRpm({}), 
     new MakerDeb({}),
     new MakerDMG({
