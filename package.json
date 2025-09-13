@@ -2,7 +2,7 @@
   "name": "git-x",
   "productName": "git-x",
   "version": "1.0.0",
-  "description": "Administrador de cuentas Git con integración completa de GitHub CLI y gestión de claves SSH",
+  "description": "Git Account Manager with complete GitHub CLI integration and SSH key management",
   "main": ".vite/build/main.js",
   "homepage": "https://github.com/mauriciorossdev/git-x",
   "repository": {

@@ -6,111 +6,110 @@
 [![Electron](https://img.shields.io/badge/Electron-191970?logo=Electron&logoColor=white)](https://www.electronjs.org/)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 
-**Administrador de cuentas Git con integración completa de GitHub CLI y gestión de claves SSH**
+**Git Account Manager with complete GitHub CLI integration and SSH key management**
 
-Git X es una aplicación Electron moderna que te permite gestionar múltiples cuentas Git, claves SSH y autenticarte fácilmente con GitHub CLI para una experiencia Git más fluida y segura.
+Git X is a modern Electron application that allows you to manage multiple Git accounts, SSH keys, and easily authenticate with GitHub CLI for a smoother and more secure Git experience.
 
-## ✨ Características Principales
+## ✨ Main Features
 
-### 🔐 Gestión de Cuentas Git
-- **Múltiples cuentas**: Maneja varias cuentas Git simultáneamente
-- **Cambio rápido**: Activa/desactiva cuentas con un solo clic
-- **Configuración automática**: Git se configura automáticamente al cambiar de cuenta
-- **Exportación**: Exporta tus cuentas en formato JSON
+### 🔐 Git Account Management
+- **Multiple accounts**: Manage several Git accounts simultaneously
+- **Quick switching**: Activate/deactivate accounts with a single click
+- **Automatic configuration**: Git configures automatically when switching accounts
+- **Export**: Export your accounts in JSON format
 
-### 🔑 Gestión de Claves SSH
-- **Generación automática**: Crea claves SSH RSA de 4096 bits
-- **Múltiples claves**: Maneja diferentes claves para diferentes servicios
-- **Exportación segura**: Exporta claves públicas para agregar a GitHub/GitLab
-- **Validación**: Verifica que las claves sean válidas
+### 🔑 SSH Key Management
+- **Automatic generation**: Create 4096-bit RSA SSH keys
+- **Multiple keys**: Manage different keys for different services
+- **Secure export**: Export public keys to add to GitHub/GitLab
+- **Validation**: Verify that keys are valid
 
-### 🚀 Integración con GitHub CLI
-- **Login automático**: Autenticación web con códigos de una sola vez
-- **Configuración automática**: Git se configura automáticamente con tu cuenta
-- **Manejo de múltiples cuentas**: Cambia fácilmente entre diferentes cuentas de GitHub
-- **Interfaz intuitiva**: Proceso paso a paso con indicadores visuales
+### 🚀 GitHub CLI Integration
+- **Automatic login**: Web authentication with one-time codes
+- **Automatic configuration**: Git configures automatically with your account
+- **Multiple account handling**: Easily switch between different GitHub accounts
+- **Intuitive interface**: Step-by-step process with visual indicators
 
-## 🎯 Casos de Uso
+## 🎯 Use Cases
 
-- **Desarrolladores**: Cambiar entre cuentas personales y de trabajo
-- **Equipos**: Manejar múltiples proyectos con diferentes configuraciones
-- **DevOps**: Automatizar la configuración de Git en diferentes entornos
-- **Estudiantes**: Gestionar proyectos académicos y personales
+- **Developers**: Switch between personal and work accounts
+- **Teams**: Manage multiple projects with different configurations
+- **Students**: Manage academic and personal projects
 
-## 🚀 Inicio Rápido
+## 🚀 Quick Start
 
-### 1. Instalación
+### 1. Installation
 ```bash
-# Clonar el repositorio
+# Clone the repository
 git clone https://github.com/mauriciorossdev/git-x.git
 cd git-x
 
-# Instalar dependencias
+# Install dependencies
 npm install
 
-# Ejecutar en modo desarrollo
+# Run in development mode
 npm start
 ```
 
-### 2. Primera Cuenta
-1. Haz clic en **"🔐 Login con GitHub CLI"** para autenticación automática
-2. O usa **"➕ Agregar Nueva Cuenta"** para configuración manual
-3. Completa la información de tu cuenta Git
-4. ¡Listo! Tu cuenta está configurada
+### 2. First Account
+1. Click **"🔐 Login with GitHub CLI"** for automatic authentication
+2. Or use **"➕ Add New Account"** for manual configuration
+3. Complete your Git account information
+4. Done! Your account is configured
 
-### 3. Generar Claves SSH
-1. Ve a la pestaña **"Claves SSH"**
-2. Haz clic en **"🔑 Generar Nueva Clave"**
-3. Elige el tipo de clave (RSA 4096 bits recomendado)
-4. Exporta la clave pública y agrégala a GitHub/GitLab
+### 3. Generate SSH Keys
+1. Go to the **"SSH Keys"** tab
+2. Click **"🔑 Generate New Key"**
+3. Choose the key type (4096-bit RSA recommended)
+4. Export the public key and add it to GitHub/GitLab
 
-## 🔧 Tecnologías
+## 🔧 Technologies
 
 - **Frontend**: React + TypeScript + Tailwind CSS
 - **Backend**: Electron
 - **Build**: Vite
-- **Gestión de estado**: React Hooks
-- **Almacenamiento**: localStorage (configurable para persistencia)
+- **State management**: React Hooks
+- **Storage**: localStorage (configurable for persistence)
 
-## 📱 Capturas de Pantalla
+## 📱 Screenshots
 
-### Dashboard Principal
-- Vista general de cuentas activas
-- Estado actual de Git
-- Acceso rápido a todas las funcionalidades
+### Main Dashboard
+- Overview of active accounts
+- Current Git status
+- Quick access to all features
 
-### Gestión de Cuentas
-- Lista de todas las cuentas configuradas
-- Indicadores de estado activo/inactivo
-- Acciones rápidas (activar, eliminar, exportar)
+### Account Management
+- List of all configured accounts
+- Active/inactive status indicators
+- Quick actions (activate, delete, export)
 
-### Login con GitHub CLI
-- Proceso paso a paso de autenticación
-- Verificación de códigos de una sola vez
-- Configuración automática de Git
+### GitHub CLI Login
+- Step-by-step authentication process
+- One-time code verification
+- Automatic Git configuration
 
-### Gestión de Claves SSH
-- Generación automática de claves
-- Validación y exportación
-- Manejo de múltiples claves
+### SSH Key Management
+- Automatic key generation
+- Validation and export
+- Multiple key management
 
-## 🛠️ Comandos Disponibles
+## 🛠️ Available Commands
 
 ```bash
-# Desarrollo
-npm start            # Ejecutar en modo desarrollo
-npm run package      # Empaquetar aplicación
-npm run make         # Crear distributables
-npm run publish      # Publicar aplicación
+# Development
+npm start            # Run in development mode
+npm run package      # Package application
+npm run make         # Create distributables
+npm run publish      # Publish application
 
 # Linting
-npm run lint         # Ejecutar ESLint
-npm run lint:fix     # Corregir errores de linting
+npm run lint         # Run ESLint
+npm run lint:fix     # Fix linting errors
 ```
 
-## 🔐 Configuración de GitHub CLI
+## 🔐 GitHub CLI Configuration
 
-Para usar la funcionalidad de login automático, necesitas tener GitHub CLI instalado:
+To use the automatic login functionality, you need to have GitHub CLI installed:
 
 ### macOS
 ```bash
@@ -124,65 +123,56 @@ winget install GitHub.cli
 
 ### Linux
 ```bash
-# Ver instrucciones completas en README-GitHub-CLI.md
+# See complete instructions in README-GitHub-CLI.md
 ```
 
-## 📚 Documentación
+## 📚 Documentation
 
-- **[README-GitHub-CLI.md](README-GitHub-CLI.md)**: Guía completa de GitHub CLI
-- **[README-SSH.md](README-SSH.md)**: Documentación de gestión de claves SSH
-- **[CONTRIBUTING.md](CONTRIBUTING.md)**: Guía para contribuir al proyecto
-- **[SECURITY.md](SECURITY.md)**: Política de seguridad y reporte de vulnerabilidades
+- **[README-GitHub-CLI.md](README-GitHub-CLI.md)**: Complete GitHub CLI guide
+- **[README-SSH.md](README-SSH.md)**: SSH key management documentation
+- **[CONTRIBUTING.md](CONTRIBUTING.md)**: Guide to contribute to the project
+- **[SECURITY.md](SECURITY.md)**: Security policy and vulnerability reporting
 
-## 🤝 Contribuir
+## 🤝 Contributing
 
-¡Las contribuciones son bienvenidas! Por favor lee nuestra [Guía de Contribución](CONTRIBUTING.md) para detalles sobre nuestro código de conducta y el proceso para enviar pull requests.
+Contributions are welcome! Please read our [Contributing Guide](CONTRIBUTING.md) for details about our code of conduct and the process for submitting pull requests.
 
-1. Fork el proyecto
-2. Crea una rama para tu feature (`git checkout -b feature/AmazingFeature`)
-3. Commit tus cambios (`git commit -m 'Add some AmazingFeature'`)
-4. Push a la rama (`git push origin feature/AmazingFeature`)
-5. Abre un Pull Request
+1. Fork the project
+2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📄 Licencia
+## 📄 License
 
-Este proyecto está bajo la Licencia MIT. Ver el archivo [LICENSE](LICENSE) para más detalles.
+This project is under the MIT License. See the [LICENSE](LICENSE) file for more details.
 
-## 🙏 Agradecimientos
+## 🙏 Acknowledgments
 
-- **GitHub CLI**: Por la excelente herramienta de línea de comandos
-- **Electron**: Por el framework de aplicaciones de escritorio
-- **React**: Por la biblioteca de interfaz de usuario
-- **Tailwind CSS**: Por el framework de CSS utilitario
-
-## 🔮 Roadmap
-
-- [ ] **Sincronización en la nube**: Backup automático de configuraciones
-- [ ] **Integración con repositorios**: Operaciones directas en repositorios
-- [ ] **Gestión de tokens**: Manejo de tokens de acceso personal
-- [ ] **Temas personalizables**: Múltiples temas visuales
-- [ ] **Plugins**: Sistema de plugins para funcionalidades adicionales
-- [ ] **Multiplataforma**: Soporte completo para Windows y Linux
+- **GitHub CLI**: For the excellent command-line tool
+- **Electron**: For the desktop application framework
+- **React**: For the user interface library
+- **Tailwind CSS**: For the utility CSS framework
 
 ---
 
-## 💡 Consejos de Uso
+## 💡 Usage Tips
 
-1. **Usa GitHub CLI** para la autenticación más segura
-2. **Genera claves SSH** de 4096 bits para mayor seguridad
-3. **Exporta regularmente** tus configuraciones como respaldo
-4. **Mantén actualizado** GitHub CLI para las últimas funcionalidades
+1. **Use GitHub CLI** for the most secure authentication
+2. **Generate SSH keys** with 4096 bits for greater security
+3. **Export regularly** your configurations as backup
+4. **Keep updated** GitHub CLI for the latest features
 
-## 🚨 Solución de Problemas
+## 🚨 Troubleshooting
 
-### Problemas Comunes
+### Common Issues
 
-#### GitHub CLI no está instalado
+#### GitHub CLI is not installed
 ```bash
-# Verificar instalación
+# Check installation
 gh --version
 
-# Instalar si no está presente
+# Install if not present
 # macOS
 brew install gh
 
@@ -193,39 +183,39 @@ winget install GitHub.cli
 curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | sudo dd of=/usr/share/keyrings/githubcli-archive-keyring.gpg
 ```
 
-#### Error de permisos en macOS
+#### Permission error on macOS
 ```bash
-# Dar permisos de accesibilidad
-# Ir a: Preferencias del Sistema > Seguridad y Privacidad > Accesibilidad
-# Agregar Terminal y/o la aplicación Git X
+# Give accessibility permissions
+# Go to: System Preferences > Security & Privacy > Accessibility
+# Add Terminal and/or the Git X application
 ```
 
-#### Problemas con claves SSH
+#### SSH key issues
 ```bash
-# Verificar permisos de archivos SSH
+# Check SSH file permissions
 chmod 700 ~/.ssh
 chmod 600 ~/.ssh/id_*
 
-# Verificar agente SSH
+# Check SSH agent
 ssh-add -l
 ```
 
-### Obtener Ayuda
+### Get Help
 
-- 📖 **Documentación**: Revisa los archivos README específicos
-- 🐛 **Reportar Bugs**: [GitHub Issues](https://github.com/mauriciorossdev/git-x/issues)
-- 💬 **Discusiones**: [GitHub Discussions](https://github.com/mauriciorossdev/git-x/discussions)
-- 🔒 **Seguridad**: [SECURITY.md](SECURITY.md) para reportes de seguridad
+- 📖 **Documentation**: Review the specific README files
+- 🐛 **Report Bugs**: [GitHub Issues](https://github.com/mauriciorossdev/git-x/issues)
+- 💬 **Discussions**: [GitHub Discussions](https://github.com/mauriciorossdev/git-x/discussions)
+- 🔒 **Security**: [SECURITY.md](SECURITY.md) for security reports
 
-## 📊 Estadísticas del Proyecto
+## 📊 Project Statistics
 
 ![GitHub stars](https://img.shields.io/github/stars/mauriciorossdev/git-x?style=social)
 ![GitHub forks](https://img.shields.io/github/forks/mauriciorossdev/git-x?style=social)
 ![GitHub issues](https://img.shields.io/github/issues/mauriciorossdev/git-x)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/mauriciorossdev/git-x)
 
-¡Disfruta de una experiencia Git más fluida y segura con Git X! 🎉
+Enjoy a smoother and more secure Git experience with Git X! 🎉
 
 ---
 
-*Desarrollado con ❤️ para la comunidad de desarrolladores*
+*Developed with ❤️ for the developer community*

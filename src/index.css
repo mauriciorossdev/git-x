@@ -40,7 +40,7 @@ html:not(.dark) {
   color-scheme: light;
 }
 
-/* Verificación de que las clases dark funcionan */
+/* Verification that dark classes work */
 .debug-theme {
   background-color: red;
 }

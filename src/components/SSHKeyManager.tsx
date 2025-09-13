@@ -35,13 +35,13 @@ const SSHKeyManager: React.FC = () => {
         const result = await window.electronAPI.scanSSHDirectory();
         
         if (result.success && result.keys) {
-          // Filtrar claves que no estén ya en localStorage
+          // Filter keys that are not already in localStorage
           const existingKeys = result.keys.filter(existingKey => 
             !keys.some(savedKey => savedKey.filePath === existingKey.filePath)
           );
 
           if (existingKeys.length > 0) {
-            // Agregar ID y fecha de creación a las claves existentes
+            // Add ID and creation date to existing keys
             const keysWithMetadata: SSHKey[] = existingKeys.map(key => ({
               ...key,
               id: `existing-${Date.now()}-${Math.random()}`,

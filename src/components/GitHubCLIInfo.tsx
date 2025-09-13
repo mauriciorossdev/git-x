@@ -50,7 +50,7 @@ const GitHubCLIInfo: React.FC<GitHubCLIInfoProps> = ({ onClose }) => {
         </div>
         
         <div className="space-y-6">
-          {/* ¿Qué es GitHub CLI? */}
+          {/* What is GitHub CLI? */}
           <div>
             <h4 className="text-lg font-semibold text-gray-900 mb-3">
               🤔 What is GitHub CLI?
@@ -75,7 +75,7 @@ const GitHubCLIInfo: React.FC<GitHubCLIInfoProps> = ({ onClose }) => {
             </ul>
           </div>
 
-          {/* Instalación */}
+          {/* Installation */}
           <div>
             <h4 className="text-lg font-semibold text-gray-900 mb-3">
               📥 Installation
@@ -126,7 +126,7 @@ const GitHubCLIInfo: React.FC<GitHubCLIInfoProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Comandos útiles */}
+          {/* Useful commands */}
           <div>
             <h4 className="text-lg font-semibold text-gray-900 mb-3">
               🛠️ Useful Commands
@@ -151,7 +151,7 @@ const GitHubCLIInfo: React.FC<GitHubCLIInfoProps> = ({ onClose }) => {
             </div>
           </div>
 
-          {/* Enlaces útiles */}
+          {/* Useful links */}
           <div>
             <h4 className="text-lg font-semibold text-gray-900 mb-3">
               🔗 Useful Links

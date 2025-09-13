@@ -19,7 +19,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   checkSSHKeyExists: (filePath: string) => 
     ipcRenderer.invoke('check-ssh-key-exists', filePath),
   
-  // Función para escanear el directorio SSH
+  // Function to scan SSH directory
   scanSSHDirectory: () => 
     ipcRenderer.invoke('scan-ssh-directory'),
   
@@ -27,7 +27,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   executeCommand: (command: string, args: string[]) => 
     ipcRenderer.invoke('execute-command', { command, args }),
   
-  // Funciones para obtener información del sistema
+  // Functions to get system information
   getHomeDirectory: () => ipcRenderer.invoke('get-home-directory'),
   getPlatform: () => ipcRenderer.invoke('get-platform'),
 });

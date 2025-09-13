@@ -123,7 +123,7 @@ const GitAccountManager: React.FC = () => {
     console.log('Saving to localStorage:', accountsJson);
     localStorage.setItem('git-accounts', accountsJson);
     
-    // Verificar que se guardó correctamente
+    // Verify that it was saved correctly
     const savedAccounts = localStorage.getItem('git-accounts');
     console.log('Verified saved accounts:', savedAccounts);
     

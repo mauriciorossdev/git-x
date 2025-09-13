@@ -96,7 +96,7 @@ ipcMain.handle('generate-ssh-key', async (event, { type, email, filePath }) => {
       '-t', type,
       '-C', email,
       '-f', filePath,
-      '-N', '', // Sin contraseña
+      '-N', '', // No password
       '-q'     // Modo silencioso
     ];
 
@@ -133,7 +133,7 @@ ipcMain.handle('generate-ssh-key', async (event, { type, email, filePath }) => {
   }
 });
 
-// Leer clave pública SSH
+// Read SSH public key
 ipcMain.handle('read-ssh-public-key', async (event, filePath) => {
   try {
     const publicKeyPath = `${filePath}.pub`;
@@ -141,7 +141,7 @@ ipcMain.handle('read-ssh-public-key', async (event, filePath) => {
     if (!fs.existsSync(publicKeyPath)) {
       return {
         success: false,
-        error: 'Archivo de clave pública no encontrado'
+        error: 'Public key file not found'
       };
     }
 
@@ -156,7 +156,7 @@ ipcMain.handle('read-ssh-public-key', async (event, filePath) => {
     console.error('Error reading SSH public key:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Error al leer la clave pública'
+      error: error instanceof Error ? error.message : 'Error reading public key'
     };
   }
 });
@@ -222,19 +222,19 @@ ipcMain.handle('scan-ssh-directory', async () => {
     const sshKeys = [];
 
     for (const file of files) {
-      // Solo procesar archivos de claves privadas (sin extensión .pub)
+      // Only process private key files (without .pub extension)
       if (!file.endsWith('.pub') && !file.includes('.') && file !== 'known_hosts' && file !== 'config') {
         const privateKeyPath = path.join(sshDir, file);
         const publicKeyPath = `${privateKeyPath}.pub`;
 
-        // Verificar que existe tanto la clave privada como la pública
+        // Verify that both private and public keys exist
         if (fs.existsSync(privateKeyPath) && fs.existsSync(publicKeyPath)) {
           try {
             // Leer las claves
             const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
             const publicKey = fs.readFileSync(publicKeyPath, 'utf8');
 
-            // Extraer información de la clave pública
+            // Extract information from public key
             const publicKeyLines = publicKey.trim().split(' ');
             const keyType = publicKeyLines[0].replace('ssh-', '');
             const keyContent = publicKeyLines[1];

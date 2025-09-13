@@ -75,7 +75,7 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
       console.log('Clase dark removida');
     }
     
-    // Verificar que la clase se aplicó correctamente
+    // Verify that the class was applied correctly
     console.log('Clases actuales en html:', root.className);
   }, [theme]);
 
