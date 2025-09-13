@@ -1,0 +1,50 @@
+@import "tailwindcss";
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities; */
+
+:root {
+  /* Variables para modo claro */
+  --bg-primary: #f9fafb;
+  --bg-secondary: #ffffff;
+  --text-primary: #111827;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --accent-color: #3b82f6;
+}
+
+.dark {
+  /* Variables para modo oscuro */
+  --bg-primary: #000000;
+  --bg-secondary: #000000;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --border-color: #374151;
+  --accent-color: #60a5fa;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Estilos forzados para debugging */
+html.dark {
+  color-scheme: dark;
+}
+
+html:not(.dark) {
+  color-scheme: light;
+}
+
+/* Verificación de que las clases dark funcionan */
+.debug-theme {
+  background-color: red;
+}
+
+.dark .debug-theme {
+  background-color: blue;
+}

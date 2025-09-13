@@ -1,0 +1,124 @@
+# Auto detect text files and perform LF normalization
+* text=auto
+
+# Source code
+*.ts text
+*.tsx text
+*.js text
+*.jsx text
+*.json text
+*.md text
+*.yml text
+*.yaml text
+
+# Documentation
+*.md text
+*.txt text
+*.rst text
+
+# Configuration files
+*.json text
+*.yml text
+*.yaml text
+*.toml text
+*.ini text
+*.cfg text
+*.conf text
+
+# Web files
+*.html text
+*.css text
+*.scss text
+*.sass text
+*.less text
+
+# Shell scripts
+*.sh text
+*.bash text
+*.zsh text
+
+# Git files
+.gitignore text
+.gitattributes text
+.gitmodules text
+
+# License and legal
+LICENSE text
+COPYING text
+AUTHORS text
+CONTRIBUTORS text
+
+# Binary files (these should not be normalized)
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.svg binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.eot binary
+*.otf binary
+
+# Archives
+*.zip binary
+*.tar binary
+*.gz binary
+*.rar binary
+*.7z binary
+
+# Executables
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.app binary
+
+# OS generated files
+.DS_Store binary
+Thumbs.db binary
+desktop.ini binary
+
+# Node.js
+package-lock.json text
+yarn.lock text
+pnpm-lock.yaml text
+
+# Electron
+*.asar binary
+
+# Build outputs
+dist/ binary
+build/ binary
+out/ binary
+.vite/ binary
+
+# IDE files
+.vscode/ text
+.idea/ text
+*.swp text
+*.swo text
+
+# Logs
+*.log text
+logs/ text
+
+# Environment files
+.env text
+.env.local text
+.env.development text
+.env.test text
+.env.production text
+
+# Lock files
+package-lock.json text
+yarn.lock text
+pnpm-lock.yaml text
+
+# Ensure these files are always treated as text
+*.md text
+*.txt text
+*.json text
+*.yml text
+*.yaml text

@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1703123456789",
+    "name": "Personal",
+    "type": "ed25519",
+    "email": "tu_email_personal@example.com",
+    "filePath": "/Users/usuario/.ssh/id_ed25519_personal",
+    "publicKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAI...",
+    "privateKey": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtZW\nQyNTUxOQAAACB...",
+    "createdAt": "2023-12-21T10:30:00.000Z"
+  },
+  {
+    "id": "1703123456790",
+    "name": "Trabajo",
+    "type": "rsa",
+    "email": "tu_email_trabajo@empresa.com",
+    "filePath": "/Users/usuario/.ssh/id_rsa_trabajo",
+    "publicKey": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC...",
+    "privateKey": "-----BEGIN OPENSSH PRIVATE KEY-----\nb3BlbnNzaC1rZXktdjEAAAAABG5vbmUAAAAEbm9uZQAAAAAAAAABAAAAMwAAAAtzc2gtcn\nNhAAAAAwEAAQAAAQEA...",
+    "createdAt": "2023-12-21T11:00:00.000Z"
+  }
+]

@@ -1,0 +1,78 @@
+{
+  "name": "git-x",
+  "productName": "git-x",
+  "version": "1.0.0",
+  "description": "Administrador de cuentas Git con integración completa de GitHub CLI y gestión de claves SSH",
+  "main": ".vite/build/main.js",
+  "homepage": "https://github.com/mauriciorossdev/git-x",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mauriciorossdev/git-x.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mauriciorossdev/git-x/issues"
+  },
+  "scripts": {
+    "start": "electron-forge start",
+    "package": "electron-forge package",
+    "make": "electron-forge make",
+    "publish": "electron-forge publish",
+    "lint": "eslint --ext .ts,.tsx .",
+    "lint:fix": "eslint --ext .ts,.tsx . --fix"
+  },
+  "keywords": [
+    "git",
+    "github",
+    "ssh",
+    "account-manager",
+    "electron",
+    "developer-tools",
+    "github-cli",
+    "git-manager",
+    "ssh-keys",
+    "git-accounts",
+    "desktop-app",
+    "typescript",
+    "react"
+  ],
+  "author": {
+    "name": "Mauricio Ross",
+    "email": "mauricio@example.com",
+    "url": "https://github.com/mauriciorossdev"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.8.3",
+    "@electron-forge/maker-deb": "^7.8.3",
+    "@electron-forge/maker-dmg": "^7.8.3",
+    "@electron-forge/maker-rpm": "^7.8.3",
+    "@electron-forge/maker-squirrel": "^7.8.3",
+    "@electron-forge/maker-zip": "^7.8.3",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.8.3",
+    "@electron-forge/plugin-fuses": "^7.8.3",
+    "@electron-forge/plugin-vite": "^7.8.3",
+    "@electron/fuses": "^1.8.0",
+    "@tailwindcss/forms": "^0.5.10",
+    "@tailwindcss/postcss": "^4.1.12",
+    "@types/electron-squirrel-startup": "^1.0.2",
+    "@typescript-eslint/eslint-plugin": "^5.62.0",
+    "@typescript-eslint/parser": "^5.62.0",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.21",
+    "electron": "37.3.0",
+    "eslint": "^8.57.1",
+    "eslint-plugin-import": "^2.32.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.1.12",
+    "typescript": "~4.5.4",
+    "vite": "^5.4.19"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "electron-squirrel-startup": "^1.0.1",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1"
+  }
+}
