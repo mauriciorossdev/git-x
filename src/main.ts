@@ -1,5 +1,5 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
-import { exec } from 'child_process';
+import { app, BrowserWindow, ipcMain, dialog, shell, Menu } from 'electron';
+import { exec, spawn } from 'child_process';
 import { promisify } from 'util';
 import * as fs from 'fs';
 import * as path from 'path';
@@ -8,15 +8,91 @@ import * as os from 'os';
 const execAsync = promisify(exec);
 
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
-if (require('electron-squirrel-startup')) {
-  app.quit();
+if (process.platform === 'win32') {
+  try {
+    if (require('electron-squirrel-startup')) {
+      app.quit();
+    }
+  } catch (error) {
+    // electron-squirrel-startup is only available on Windows
+    console.log('electron-squirrel-startup not available on this platform');
+  }
 }
+
+const createApplicationMenu = (mainWindow: BrowserWindow): void => {
+  const isMac = process.platform === 'darwin';
+  const template: Electron.MenuItemConstructorOptions[] = [
+    ...(isMac
+      ? [{
+          label: 'Git X',
+          submenu: [
+            { role: 'about' as const },
+            { type: 'separator' as const },
+            { role: 'services' as const },
+            { type: 'separator' as const },
+            { role: 'hide' as const },
+            { role: 'hideOthers' as const },
+            { role: 'unhide' as const },
+            { type: 'separator' as const },
+            { role: 'quit' as const },
+          ],
+        }]
+      : []),
+    {
+      label: 'File',
+      submenu: [
+        ...(isMac ? [] : [{ role: 'quit' as const }]),
+      ],
+    },
+    {
+      label: 'Edit',
+      submenu: [
+        { role: 'undo' as const },
+        { role: 'redo' as const },
+        { type: 'separator' as const },
+        { role: 'cut' as const },
+        { role: 'copy' as const },
+        { role: 'paste' as const },
+        ...(isMac ? [{ role: 'pasteAndMatchStyle' as const }] : []),
+        { role: 'selectAll' as const },
+      ],
+    },
+    {
+      label: 'View',
+      submenu: [
+        { role: 'reload' as const },
+        { role: 'forceReload' as const },
+        { role: 'toggleDevTools' as const },
+        { type: 'separator' as const },
+        { role: 'resetZoom' as const },
+        { role: 'zoomIn' as const },
+        { role: 'zoomOut' as const },
+        { type: 'separator' as const },
+        { role: 'togglefullscreen' as const },
+      ],
+    },
+    {
+      label: 'Window',
+      submenu: [
+        { role: 'minimize' as const },
+        { role: 'zoom' as const },
+        ...(isMac
+          ? [{ type: 'separator' as const }, { role: 'front' as const }, { type: 'separator' as const }, { role: 'window' as const }]
+          : [{ role: 'close' as const }]),
+      ],
+    },
+  ];
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+};
 
 const createWindow = (): void => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
+    title: 'Git X',
     height: 800,
     width: 1200,
+    backgroundColor: '#0f0f0f',
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
@@ -30,6 +106,9 @@ const createWindow = (): void => {
   } else {
     mainWindow.loadFile(path.join(__dirname, `../renderer/${MAIN_WINDOW_VITE_NAME}/index.html`));
   }
+
+  // Menú de aplicación (barra de cabecera)
+  createApplicationMenu(mainWindow);
 
   // Open the DevTools.
   if (process.env.NODE_ENV === 'development') {
@@ -278,30 +357,196 @@ ipcMain.handle('scan-ssh-directory', async () => {
   }
 });
 
-// Ejecutar comando del sistema
-ipcMain.handle('execute-command', async (event, { command, args }) => {
-  try {
-    const fullCommand = `${command} ${args.join(' ')}`;
-    console.log(`Executing command: ${fullCommand}`);
-    
-    const { stdout, stderr } = await execAsync(fullCommand);
-    
-    if (stderr && stderr.trim()) {
-      console.warn('Command stderr:', stderr);
-    }
-    
-    return {
-      success: true,
-      output: stdout.trim(),
-      error: null
-    };
+// Abrir diálogo para seleccionar una carpeta (para agregar a rutas de búsqueda)
+ipcMain.handle('select-folder', async () => {
+  const win = BrowserWindow.getFocusedWindow() ?? BrowserWindow.getAllWindows()[0];
+  if (!win) return { canceled: true, path: null };
+  const result = await dialog.showOpenDialog(win, {
+    properties: ['openDirectory'],
+    title: 'Seleccionar carpeta para buscar repositorios',
+  });
+  if (result.canceled || result.filePaths.length === 0) {
+    return { canceled: true, path: null };
+  }
+  return { canceled: false, path: result.filePaths[0] };
+});
 
+// Abrir URL en el navegador por defecto
+ipcMain.handle('open-external', async (event, url: string) => {
+  try {
+    await shell.openExternal(url);
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: e instanceof Error ? e.message : 'No se pudo abrir el enlace' };
+  }
+});
+
+// Abrir carpeta en el explorador del sistema
+ipcMain.handle('open-folder', async (event, folderPath: string) => {
+  try {
+    const resolved = folderPath.replace(/^~/, os.homedir());
+    const err = await shell.openPath(resolved);
+    if (err) return { success: false, error: err };
+    return { success: true };
+  } catch (e) {
+    return { success: false, error: e instanceof Error ? e.message : 'No se pudo abrir la carpeta' };
+  }
+});
+
+// Abrir carpeta en un editor (cursor, code). Para 'claude' abre la terminal en esa carpeta para usar la CLI.
+ipcMain.handle('open-in-editor', async (event, editor: string, folderPath: string) => {
+  const resolved = folderPath.replace(/^~/, os.homedir());
+
+  if (editor === 'claude') {
+    // Abrir terminal en la carpeta del repo y ejecutar claude
+    return new Promise<{ success: boolean; error?: string }>((resolve) => {
+      const platform = process.platform;
+      let child;
+      if (platform === 'darwin') {
+        const escaped = resolved.replace(/'/g, "'\"'\"'");
+        child = spawn('osascript', [
+          '-e',
+          `tell application "Terminal" to activate`,
+          '-e',
+          `tell application "Terminal" to do script "cd '${escaped}' && claude"`,
+        ], { detached: true, stdio: 'ignore' });
+      } else if (platform === 'win32') {
+        child = spawn('cmd.exe', ['/c', 'start', 'cmd', '/k', `cd /d "${resolved}" && claude`], { detached: true, stdio: 'ignore' });
+      } else {
+        const term = process.env.COLORTERM || process.env.TERM_PROGRAM || 'gnome-terminal';
+        if (term.includes('gnome') || term === 'gnome-terminal') {
+          child = spawn('gnome-terminal', ['--', 'bash', '-c', `cd "${resolved}" && claude; exec bash`], { detached: true, stdio: 'ignore' });
+        } else {
+          child = spawn('xterm', ['-e', `cd "${resolved}" && claude; exec $SHELL`], { detached: true, stdio: 'ignore' });
+        }
+      }
+      child.on('error', (err) => resolve({ success: false, error: err.message || 'No se pudo abrir la terminal' }));
+      child.unref();
+      process.nextTick(() => resolve({ success: true }));
+    });
+  }
+
+  return new Promise<{ success: boolean; error?: string }>((resolve) => {
+    let resolved_ = false;
+    const child = spawn(editor, [resolved], { detached: true, stdio: 'ignore' });
+    child.on('error', (err) => {
+      if (!resolved_) {
+        resolved_ = true;
+        resolve({ success: false, error: err.message || 'Aplicación no encontrada' });
+      }
+    });
+    child.unref();
+    process.nextTick(() => {
+      if (!resolved_) {
+        resolved_ = true;
+        resolve({ success: true });
+      }
+    });
+  });
+});
+
+// Scan directories for local git repos (incluye la carpeta misma si es repo, y 1 nivel de hijos)
+ipcMain.handle('scan-local-repos', async (event, searchPaths: string[]) => {
+  try {
+    const repos: { name: string; path: string }[] = [];
+    const seenPaths = new Set<string>();
+
+    for (const searchPath of searchPaths) {
+      const resolvedPath = path.normalize(searchPath.replace(/^~/, os.homedir()));
+      if (!fs.existsSync(resolvedPath)) continue;
+
+      // Si la carpeta seleccionada es un repo, agregarla
+      const gitDirHere = path.join(resolvedPath, '.git');
+      try {
+        if (fs.existsSync(gitDirHere)) {
+          const name = path.basename(resolvedPath);
+          if (!seenPaths.has(resolvedPath)) {
+            seenPaths.add(resolvedPath);
+            repos.push({ name, path: resolvedPath });
+          }
+        }
+      } catch {
+        // skip
+      }
+
+      let entries: fs.Dirent[];
+      try {
+        entries = fs.readdirSync(resolvedPath, { withFileTypes: true });
+      } catch {
+        continue;
+      }
+
+      for (const entry of entries) {
+        if (!entry.isDirectory()) continue;
+        const fullPath = path.join(resolvedPath, entry.name);
+        const gitDir = path.join(fullPath, '.git');
+        try {
+          if (fs.existsSync(gitDir) && !seenPaths.has(fullPath)) {
+            seenPaths.add(fullPath);
+            repos.push({ name: entry.name, path: fullPath });
+          }
+        } catch {
+          // skip inaccessible dirs
+        }
+      }
+    }
+
+    return { success: true, repos };
   } catch (error) {
-    console.error('Error executing command:', error);
+    console.error('Error scanning local repos:', error);
     return {
       success: false,
-      output: null,
-      error: error instanceof Error ? error.message : 'Error al ejecutar el comando'
+      repos: [],
+      error: error instanceof Error ? error.message : 'Error scanning local repos'
     };
   }
+});
+
+// Ejecutar comando del sistema (spawn sin shell para rutas con espacios y argumentos especiales)
+ipcMain.handle('execute-command', async (event, { command, args }) => {
+  console.log('[main] execute-command:', command, 'args:', args?.length, args?.slice(0, 5));
+  return new Promise((resolve) => {
+    try {
+      const child = spawn(command, args, {
+        shell: false,
+        stdio: ['ignore', 'pipe', 'pipe'],
+      });
+
+      let stdout = '';
+      let stderr = '';
+
+      child.stdout?.on('data', (data) => { stdout += data.toString(); });
+      child.stderr?.on('data', (data) => { stderr += data.toString(); });
+
+      child.on('error', (err) => {
+        console.error('[main] execute-command error:', err);
+        resolve({
+          success: false,
+          output: null,
+          error: err instanceof Error ? err.message : 'Error al ejecutar el comando',
+        });
+      });
+
+      child.on('close', (code) => {
+        const output = stdout.trim();
+        const errMsg = code !== 0 ? (stderr.trim() || `Exit code ${code}`) : null;
+        if (stderr && stderr.trim()) {
+          console.warn('[main] execute-command stderr:', stderr.slice(0, 300));
+        }
+        console.log('[main] execute-command result:', { command, code, outputLength: output.length, error: errMsg });
+        resolve({
+          success: code === 0,
+          output,
+          error: errMsg,
+        });
+      });
+    } catch (error) {
+      console.error('[main] execute-command exception:', error);
+      resolve({
+        success: false,
+        output: null,
+        error: error instanceof Error ? error.message : 'Error al ejecutar el comando',
+      });
+    }
+  });
 });

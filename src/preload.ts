@@ -27,6 +27,20 @@ contextBridge.exposeInMainWorld('electronAPI', {
   executeCommand: (command: string, args: string[]) => 
     ipcRenderer.invoke('execute-command', { command, args }),
   
+  // Scan local repos
+  scanLocalRepos: (searchPaths: string[]) =>
+    ipcRenderer.invoke('scan-local-repos', searchPaths),
+
+  // Abrir diálogo para seleccionar carpeta
+  selectFolder: () => ipcRenderer.invoke('select-folder'),
+
+  // Abrir carpeta en el sistema o en un editor
+  openFolder: (folderPath: string) => ipcRenderer.invoke('open-folder', folderPath),
+  openInEditor: (editor: string, folderPath: string) => ipcRenderer.invoke('open-in-editor', editor, folderPath),
+
+  // Abrir URL en el navegador
+  openExternal: (url: string) => ipcRenderer.invoke('open-external', url),
+
   // Functions to get system information
   getHomeDirectory: () => ipcRenderer.invoke('get-home-directory'),
   getPlatform: () => ipcRenderer.invoke('get-platform'),

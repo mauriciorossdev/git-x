@@ -1,5 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GitAccount } from './GitAccountManager';
+
+const EVALUATION_DELAY_MS = 500;
 
 interface GitAccountListProps {
   accounts: GitAccount[];
@@ -8,7 +10,15 @@ interface GitAccountListProps {
 }
 
 const GitAccountList: React.FC<GitAccountListProps> = ({ accounts, onActivate, onDelete }) => {
+  const [hasEvaluated, setHasEvaluated] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setHasEvaluated(true), EVALUATION_DELAY_MS);
+    return () => clearTimeout(t);
+  }, []);
+
   if (accounts.length === 0) {
+    if (!hasEvaluated) return null;
     return (
       <div className="bg-white dark:bg-black border border-gray-200 dark:border-gray-700 rounded-lg p-8 text-center">
         <svg className="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">

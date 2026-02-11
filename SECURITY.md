@@ -15,7 +15,7 @@ La seguridad es una prioridad para Git X. Si descubres una vulnerabilidad de seg
 
 En su lugar, reporta la vulnerabilidad de forma privada:
 
-1. **Email**: Envía un email a `security@mauricioross.dev` (reemplaza con tu email real)
+1. **Email**: Envía un email a `mauriciorossdev@gmail.com`
 2. **Asunto**: `[SECURITY] Vulnerabilidad en Git X`
 3. **Incluye**:
    - Descripción detallada de la vulnerabilidad
@@ -156,7 +156,7 @@ git config --global url."https://github.com/".insteadOf git@github.com:
 
 Para reportes de seguridad o preguntas relacionadas:
 
-- **Email de Seguridad**: `security@mauricioross.dev`
+- **Email de Seguridad**: `mauriciorossdev@gmail.com`
 - **GitHub Issues**: Para bugs no relacionados con seguridad
 - **Discusiones**: Para preguntas generales de seguridad
 

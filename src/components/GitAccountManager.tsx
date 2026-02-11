@@ -15,16 +15,24 @@ export interface GitAccount {
   createdAt: Date;
 }
 
+const ACTION_BUTTONS_DELAY_MS = 500;
+
 const GitAccountManager: React.FC = () => {
   const [accounts, setAccounts] = useState<GitAccount[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showGitHubCLILogin, setShowGitHubCLILogin] = useState(false);
   const [currentAccount, setCurrentAccount] = useState<GitAccount | null>(null);
   const [activeTab, setActiveTab] = useState<'accounts' | 'ssh'>('accounts');
+  const [showActionButtons, setShowActionButtons] = useState(false);
 
   useEffect(() => {
     loadAccounts();
     loadCurrentGitConfig();
+  }, []);
+
+  useEffect(() => {
+    const t = setTimeout(() => setShowActionButtons(true), ACTION_BUTTONS_DELAY_MS);
+    return () => clearTimeout(t);
   }, []);
 
   const loadAccounts = async () => {
@@ -286,43 +294,45 @@ const GitAccountManager: React.FC = () => {
             onDelete={deleteAccount}
           />
           
-          {/* Action buttons */}
-          <div className="flex items-center justify-center space-x-4">
-            {accounts.length > 0 && (
+          {/* Action buttons (aparecen tras 500ms para evitar parpadeo) */}
+          {showActionButtons && (
+            <div className="flex items-center justify-center space-x-4">
+              {accounts.length > 0 && (
+                <button
+                  onClick={() => {
+                    try {
+                      const dataStr = JSON.stringify(accounts, null, 2);
+                      const dataBlob = new Blob([dataStr], { type: 'application/json' });
+                      const url = URL.createObjectURL(dataBlob);
+                      const link = document.createElement('a');
+                      link.href = url;
+                      link.download = 'git-accounts.json';
+                      link.click();
+                      URL.revokeObjectURL(url);
+                      console.log('Git accounts exported successfully');
+                    } catch (error) {
+                      console.error('Error exporting accounts:', error);
+                    }
+                  }}
+                  className="bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                >
+                  📥 Export Accounts JSON
+                </button>
+              )}
               <button
-                onClick={() => {
-                  try {
-                    const dataStr = JSON.stringify(accounts, null, 2);
-                    const dataBlob = new Blob([dataStr], { type: 'application/json' });
-                    const url = URL.createObjectURL(dataBlob);
-                    const link = document.createElement('a');
-                    link.href = url;
-                    link.download = 'git-accounts.json';
-                    link.click();
-                    URL.revokeObjectURL(url);
-                    console.log('Git accounts exported successfully');
-                  } catch (error) {
-                    console.error('Error exporting accounts:', error);
-                  }
-                }}
-                className="bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                onClick={() => setShowGitHubCLILogin(true)}
+                className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
               >
-                📥 Export Accounts JSON
+                🔐 Login with GitHub CLI
               </button>
-            )}
-            <button
-              onClick={() => setShowGitHubCLILogin(true)}
-              className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-            >
-              🔐 Login with GitHub CLI
-            </button>
-            <button
-              onClick={() => setShowForm(true)}
-              className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
-            >
-              ➕ Add New Account
-            </button>
-          </div>
+              <button
+                onClick={() => setShowForm(true)}
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              >
+                ➕ Add New Account
+              </button>
+            </div>
+          )}
           
           {/* Form for new account */}
           {showForm && (

@@ -43,6 +43,24 @@ export interface ElectronAPI {
     error?: string;
   }>;
   
+  scanLocalRepos: (searchPaths: string[]) => Promise<{
+    success: boolean;
+    repos: Array<{ name: string; path: string }>;
+    error?: string;
+  }>;
+
+  /** Abre el diálogo nativo para elegir una carpeta. Devuelve la ruta o null si se cancela. */
+  selectFolder: () => Promise<{ canceled: boolean; path: string | null }>;
+
+  /** Abre la carpeta en el explorador del sistema (Finder, Explorer, etc.). */
+  openFolder: (folderPath: string) => Promise<{ success: boolean; error?: string }>;
+
+  /** Abre la carpeta en un editor (ej. 'cursor', 'code', 'claude'). Si no está instalado, success: false. */
+  openInEditor: (editor: string, folderPath: string) => Promise<{ success: boolean; error?: string }>;
+
+  /** Abre una URL en el navegador por defecto. */
+  openExternal: (url: string) => Promise<{ success: boolean; error?: string }>;
+
   getHomeDirectory: () => Promise<string>;
   getPlatform: () => Promise<string>;
 }

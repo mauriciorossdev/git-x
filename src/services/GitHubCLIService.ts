@@ -157,9 +157,9 @@ class GitHubCLIService {
           
           // Use mock data in case of error
           const mockAccountInfo: GitHubAccountInfo = {
-            username: 'mauriciorossdev',
-            email: 'mauricio@example.com',
-            name: 'Mauricio Ross'
+            username: 'github-user',
+            email: 'user@example.com',
+            name: 'GitHub User'
           };
           
           return {
@@ -171,9 +171,9 @@ class GitHubCLIService {
       
       // Simulate account information if API is not available
       const mockAccountInfo: GitHubAccountInfo = {
-        username: 'mauriciorossdev',
-        email: 'mauricio@example.com',
-        name: 'Mauricio Ross'
+        username: 'github-user',
+        email: 'user@example.com',
+        name: 'GitHub User'
       };
       
       return {

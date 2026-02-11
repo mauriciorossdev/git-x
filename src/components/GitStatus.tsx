@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { GitAccount } from './GitAccountManager';
+
+const EVALUATION_DELAY_MS = 500;
 
 interface GitStatusProps {
   currentAccount: GitAccount | null;
 }
 
 const GitStatus: React.FC<GitStatusProps> = ({ currentAccount }) => {
+  const [hasEvaluated, setHasEvaluated] = useState(false);
+
+  useEffect(() => {
+    const t = setTimeout(() => setHasEvaluated(true), EVALUATION_DELAY_MS);
+    return () => clearTimeout(t);
+  }, []);
+
   if (!currentAccount) {
+    if (!hasEvaluated) return null;
     return (
-      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
+      <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 ">
         <div className="flex items-center">
           <div className="flex-shrink-0">
             <svg className="h-5 w-5 text-yellow-400 dark:text-yellow-500" viewBox="0 0 20 20" fill="currentColor">
