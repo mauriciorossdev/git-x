@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import GitAccountList from './GitAccountList';
 import GitAccountForm from './GitAccountForm';
 import GitStatus from './GitStatus';
@@ -24,6 +24,7 @@ const GitAccountManager: React.FC = () => {
   const [currentAccount, setCurrentAccount] = useState<GitAccount | null>(null);
   const [activeTab, setActiveTab] = useState<'accounts' | 'ssh'>('accounts');
   const [showActionButtons, setShowActionButtons] = useState(false);
+  const importInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     loadAccounts();
@@ -108,6 +109,36 @@ const GitAccountManager: React.FC = () => {
       };
       setCurrentAccount(errorAccount);
     }
+  };
+
+  const importAccountsFromFile = (file: File) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const text = reader.result as string;
+        const parsed = JSON.parse(text);
+        if (!Array.isArray(parsed)) {
+          alert('El archivo debe contener un array de cuentas.');
+          return;
+        }
+        const normalized: GitAccount[] = parsed.map((acc: any, index: number) => ({
+          id: typeof acc.id === 'string' ? acc.id : `imported-${Date.now()}-${index}`,
+          name: String(acc.name ?? ''),
+          email: String(acc.email ?? ''),
+          username: acc.username != null ? String(acc.username) : undefined,
+          isActive: Boolean(acc.isActive),
+          createdAt: acc.createdAt ? new Date(acc.createdAt) : new Date(),
+        }));
+        setAccounts(normalized);
+        localStorage.setItem('git-accounts', JSON.stringify(normalized));
+        console.log('Accounts imported successfully:', normalized.length);
+      } catch (e) {
+        console.error('Error importing accounts:', e);
+        alert('No se pudo importar el JSON. Revisa que el archivo sea válido.');
+      }
+    };
+    reader.onerror = () => alert('Error al leer el archivo.');
+    reader.readAsText(file, 'UTF-8');
   };
 
   const addAccount = (account: Omit<GitAccount, 'id' | 'createdAt'>) => {
@@ -296,7 +327,20 @@ const GitAccountManager: React.FC = () => {
           
           {/* Action buttons (aparecen tras 500ms para evitar parpadeo) */}
           {showActionButtons && (
-            <div className="flex items-center justify-center space-x-4">
+            <div className="flex items-center justify-center space-x-4 flex-wrap gap-2">
+              <input
+                ref={importInputRef}
+                type="file"
+                accept=".json,application/json"
+                className="hidden"
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    importAccountsFromFile(file);
+                    e.target.value = '';
+                  }
+                }}
+              />
               {accounts.length > 0 && (
                 <button
                   onClick={() => {
@@ -314,22 +358,28 @@ const GitAccountManager: React.FC = () => {
                       console.error('Error exporting accounts:', error);
                     }
                   }}
-                  className="bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                  className="bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium py-2 px-2 text-xs rounded-lg transition-colors"
                 >
-                  📥 Export Accounts JSON
+                  📤 Export Accounts JSON
                 </button>
               )}
               <button
+                onClick={() => importInputRef.current?.click()}
+                className="bg-gray-600 hover:bg-gray-700 dark:bg-gray-700 dark:hover:bg-gray-600 text-white font-medium py-2 px-2 text-xs rounded-lg transition-colors"
+              >
+                📥 Import Accounts JSON
+              </button>
+              <button
                 onClick={() => setShowGitHubCLILogin(true)}
-                className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                className="bg-green-600 hover:bg-green-700 dark:bg-green-700 dark:hover:bg-green-600 text-white font-medium py-2 px-2 text-xs rounded-lg transition-colors"
               >
                 🔐 Login with GitHub CLI
               </button>
               <button
                 onClick={() => setShowForm(true)}
-                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                className="bg-blue-600 hover:bg-blue-700 dark:bg-blue-700 dark:hover:bg-blue-600 text-white font-medium py-2 px-2 text-xs rounded-lg transition-colors"
               >
-                ➕ Add New Account
+                Add New Account
               </button>
             </div>
           )}

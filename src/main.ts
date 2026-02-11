@@ -7,6 +7,15 @@ import * as os from 'os';
 
 const execAsync = promisify(exec);
 
+// En versión empaquetada / producción solo se muestran logs de error
+if (app.isPackaged || process.env.NODE_ENV === 'production') {
+  const noop = () => {};
+  console.log = noop;
+  console.info = noop;
+  console.debug = noop;
+  console.warn = noop;
+}
+
 // Handle creating/removing shortcuts on Windows when installing/uninstalling.
 if (process.platform === 'win32') {
   try {

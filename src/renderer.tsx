@@ -1,4 +1,15 @@
 /**
+ * En producción solo se muestran logs de error.
+ */
+if ((import.meta as { env?: { PROD?: boolean } }).env?.PROD) {
+  const noop = () => {};
+  console.log = noop;
+  console.info = noop;
+  console.debug = noop;
+  console.warn = noop;
+}
+
+/**
  * This file will automatically be loaded by vite and run in the "renderer" context.
  * To learn more about the differences between the "main" and the "renderer" context in
  * Electron, visit:
